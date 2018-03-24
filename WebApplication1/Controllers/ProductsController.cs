@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Lab.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Lab.Data.Model;
 
 namespace WebApplication1.Controllers
 {
@@ -12,10 +14,12 @@ namespace WebApplication1.Controllers
     public class ProductsController : Controller
     {
         private readonly LabDbContext _dbContext;
+        private readonly UserManager<LabUser> _userManager;
 
-        public ProductsController(LabDbContext dbContext)
+        public ProductsController(LabDbContext dbContext, UserManager<LabUser> userManager)
         {
             _dbContext = dbContext;
+            _userManager = userManager;
         }
         // GET: api/Product
         [HttpGet]

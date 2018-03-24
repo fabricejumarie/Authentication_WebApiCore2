@@ -20,14 +20,20 @@ namespace WebApplication1.Controllers
     {
         private readonly LabDbContext _dbContext;
         private readonly SignInManager<LabUser> _signInManager;
+        private readonly UserManager<LabUser> _userManager;
+        private readonly IPasswordHasher<LabUser> _passwordHasher;
         private readonly IConfiguration _config;
 
         public AuthenticationController(LabDbContext dbContext,
             SignInManager<LabUser> signInManager,
+            UserManager<LabUser> userManager,
+            IPasswordHasher<LabUser> passwordHasher,
             IConfiguration config)
         {
             _dbContext = dbContext;
             _signInManager = signInManager;
+            _userManager = userManager;
+            _passwordHasher = passwordHasher;
             _config = config;
         }
 
@@ -55,15 +61,19 @@ namespace WebApplication1.Controllers
                 if(labUser != null)
                 {
                     var token = BuildToken(labUser);
-                    return Ok(token);
+                    return Ok(new
+                    {
+                        Token = new JwtSecurityTokenHandler().WriteToken(token),
+                        ExpirationDate = token.ValidTo
+                    });
                 }
             }
 
             return response;
         }
 
-        [HttpGet("loginAuth")]
-        public async Task<IActionResult> CredentialAuthentication(LoginModel user)
+        [HttpPost("loginAuth")]
+        public async Task<IActionResult> CredentialAuthentication([FromBody]LoginModel user)
         {
             var response = Unauthorized();
 
@@ -72,10 +82,13 @@ namespace WebApplication1.Controllers
                 var labUser = await _signInManager.UserManager.FindByNameAsync(user.UserName);
                 if (labUser != null)
                 {
-                    if (await _signInManager.UserManager.CheckPasswordAsync(labUser, user.Password))
+                    if(_passwordHasher.VerifyHashedPassword(labUser, labUser.PasswordHash, user.Password) == PasswordVerificationResult.Success)
                     {
                         var token = BuildToken(labUser);
-                        return Ok(token);
+                        return Ok(new {
+                            Token = new JwtSecurityTokenHandler().WriteToken(token),
+                            ExpirationDate = token.ValidTo
+                        });
                     }
 
                     return response;
@@ -114,11 +127,12 @@ namespace WebApplication1.Controllers
             return  BadRequest(ModelState);
         }
 
-        private string BuildToken(LabUser labUser)
+        private JwtSecurityToken BuildToken(LabUser labUser)
         {
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, labUser.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.GivenName, labUser.UserName),
                 new Claim(JwtRegisteredClaimNames.UniqueName, labUser.UserName),
                 new Claim("gender", "male")
@@ -133,7 +147,7 @@ namespace WebApplication1.Controllers
               expires: DateTime.UtcNow.AddMinutes(5),
               signingCredentials: creds);
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            return token;
         }
     }
 }
