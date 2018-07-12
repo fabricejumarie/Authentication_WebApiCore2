@@ -57,15 +57,22 @@ namespace WebApplication1.Controllers
                 {
                     userName = domainAndUserName[1];
                 }
-                var labUser = await _signInManager.UserManager.FindByNameAsync(userName);
-                if(labUser != null)
+                try
                 {
-                    var token = BuildToken(labUser);
-                    return Ok(new
+                    var labUser = await _signInManager.UserManager.FindByNameAsync(userName);
+                    if (labUser != null)
                     {
-                        Token = new JwtSecurityTokenHandler().WriteToken(token),
-                        ExpirationDate = token.ValidTo
-                    });
+                        var token = BuildToken(labUser);
+                        return Ok(new
+                        {
+                            Token = new JwtSecurityTokenHandler().WriteToken(token),
+                            ExpirationDate = token.ValidTo
+                        });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // DO something with ex
                 }
             }
 
@@ -135,7 +142,7 @@ namespace WebApplication1.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.GivenName, labUser.UserName),
                 new Claim(JwtRegisteredClaimNames.UniqueName, labUser.UserName),
-                new Claim("gender", "male")
+                //new Claim("gender", "male")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));

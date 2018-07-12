@@ -70,6 +70,7 @@
   <ItemGroup>
     <None Include="01 Create Database\Create Database.sql" />
     <None Include="02 Create Users and Set Access\02.01 Create New SQL User -  LabSQLUser.sql" />
+    <None Include="02 Create Users and Set Access\02.02 Grant Access to Database to LabSQLUser.sql" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="03 Create Tables\Products.sql" />
