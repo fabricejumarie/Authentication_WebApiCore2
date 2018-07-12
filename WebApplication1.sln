@@ -5,7 +5,16 @@ VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{BFA43326-0DBD-49F0-A137-C2E710CDEE90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab.Data", "Lab.data\Lab.Data.csproj", "{300D911F-55F1-4E8F-B40F-E7AE9938CE5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lab.Data", "Lab.data\Lab.Data.csproj", "{300D911F-55F1-4E8F-B40F-E7AE9938CE5F}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "LabDatabase", "LabDatabase\LabDatabase.sqlproj", "{FA6339D8-55A2-4C7A-A5B1-AF0E2DD49AC2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp.NetCore.UnitTests", "TestConsoleApp.NetCore.UnitTests\TestConsoleApp.NetCore.UnitTests.csproj", "{CEF64C1A-542D-48B5-9927-ACFE7CA08B7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A641557C-8980-4CAA-BE07-746B541FD781}"
+	ProjectSection(SolutionItems) = preProject
+		Readme - Info on Ticket.txt = Readme - Info on Ticket.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +30,16 @@ Global
 		{300D911F-55F1-4E8F-B40F-E7AE9938CE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{300D911F-55F1-4E8F-B40F-E7AE9938CE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{300D911F-55F1-4E8F-B40F-E7AE9938CE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA6339D8-55A2-4C7A-A5B1-AF0E2DD49AC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA6339D8-55A2-4C7A-A5B1-AF0E2DD49AC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA6339D8-55A2-4C7A-A5B1-AF0E2DD49AC2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FA6339D8-55A2-4C7A-A5B1-AF0E2DD49AC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA6339D8-55A2-4C7A-A5B1-AF0E2DD49AC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA6339D8-55A2-4C7A-A5B1-AF0E2DD49AC2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CEF64C1A-542D-48B5-9927-ACFE7CA08B7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEF64C1A-542D-48B5-9927-ACFE7CA08B7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEF64C1A-542D-48B5-9927-ACFE7CA08B7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEF64C1A-542D-48B5-9927-ACFE7CA08B7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

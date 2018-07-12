@@ -14,8 +14,8 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            var windowsUser = WindowsIdentity.GetCurrent()?.Name ?? string.Empty;
-            return new string[] { "value1", "value2", windowsUser };
+           var windowsUser = WindowsIdentity.GetCurrent()?.Name ?? string.Empty;
+           return new string[] { "value1", "value2", windowsUser };
         }
 
         // GET api/values/5

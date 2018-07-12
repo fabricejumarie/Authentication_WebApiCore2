@@ -4,6 +4,6 @@ namespace Lab.Data.Model
 {
     public class LabUser : IdentityUser
     {
-        public string NameForLabApp { get; set; }
+        //public string NameForLabApp { get; set; }
     }
 }
