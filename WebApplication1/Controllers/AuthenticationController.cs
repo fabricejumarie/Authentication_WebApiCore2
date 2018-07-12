@@ -2,6 +2,7 @@
 using Lab.Data.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -13,8 +14,12 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApplication1.Model;
 
+
+//using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+
 namespace WebApplication1.Controllers
 {
+   //did not work [Authorize(AuthenticationSchemes = IISDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     public class AuthenticationController : Controller
     {
@@ -62,7 +67,18 @@ namespace WebApplication1.Controllers
                     var labUser = await _signInManager.UserManager.FindByNameAsync(userName);
                     if (labUser != null)
                     {
+                        // This is not working on the database after removing integrated security and adding the asp.net table
                         var token = BuildToken(labUser);
+                        return Ok(new
+                        {
+                            Token = new JwtSecurityTokenHandler().WriteToken(token),
+                            ExpirationDate = token.ValidTo
+                        });
+                    }
+                    else
+                    {
+                        // checking if this would work now
+                        var token = BuildToken(userName);
                         return Ok(new
                         {
                             Token = new JwtSecurityTokenHandler().WriteToken(token),
@@ -134,6 +150,11 @@ namespace WebApplication1.Controllers
             return  BadRequest(ModelState);
         }
 
+        /// <summary>
+        /// Build the token using the Lab User
+        /// </summary>
+        /// <param name="labUser"></param>
+        /// <returns></returns>
         private JwtSecurityToken BuildToken(LabUser labUser)
         {
             var claims = new[]
@@ -142,6 +163,34 @@ namespace WebApplication1.Controllers
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.GivenName, labUser.UserName),
                 new Claim(JwtRegisteredClaimNames.UniqueName, labUser.UserName),
+                //new Claim("gender", "male")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+              _config["Jwt:Issuer"],
+              claims: claims,
+              expires: DateTime.UtcNow.AddMinutes(5),
+              signingCredentials: creds);
+
+            return token;
+        }
+
+        /// <summary>
+        /// Build the token using the User Name
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        private JwtSecurityToken BuildToken(string userName)
+        {
+            var claims = new[]
+            {
+                new Claim(JwtRegisteredClaimNames.Sub, userName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.GivenName, userName),
+                new Claim(JwtRegisteredClaimNames.UniqueName, userName),
                 //new Claim("gender", "male")
             };
 

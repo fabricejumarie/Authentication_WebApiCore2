@@ -17,10 +17,10 @@ namespace Lab.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<LabUser>().Property(lu => lu.NameForLabApp)
-                .HasColumnName("NameLab")
-                .HasMaxLength(50)
-                .IsUnicode();
+            //modelBuilder.Entity<LabUser>().Property(lu => lu.NameForLabApp)
+            //    .HasColumnName("NameLab")
+            //    .HasMaxLength(50)
+            //    .IsUnicode();
         }
     }
 }

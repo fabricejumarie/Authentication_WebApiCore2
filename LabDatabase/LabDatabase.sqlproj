@@ -75,5 +75,6 @@
   <ItemGroup>
     <Build Include="03 Create Tables\Products.sql" />
     <Build Include="03 Create Tables\Stores.sql" />
+    <Build Include="03 Create Tables\AspNetUsers.sql" />
   </ItemGroup>
 </Project>
